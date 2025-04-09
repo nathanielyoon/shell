@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+printf '%s %s %s %s %s%s' \
+    "$(TZ=America/New_York date "+%a %m/%d %I:%M:%S")" \
+    "$(($(brightnessctl g) / 960))" \
+    "$(pulsemixer --get-volume | cut -d " " -f1)" \
+    "$(($(pulsemixer --get-mute) ^ 1))" \
+    "$(cut -c1 </sys/class/power_supply/BAT1/status)" \
+    "$(</sys/class/power_supply/BAT1/capacity)"

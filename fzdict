@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+shuf "$HOME/.local/share/wn.txt" |
+    fzf \
+        --preview "dict --database wn {}" \
+        --preview-window="down,67%" \
+        --bind "enter:unbind(enter)"

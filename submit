@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+shopt -s nullglob
+
+CODE_FILE_REGEX='\.(c(c|pp)?|h[pxc]{2}?)$'
+GIT_LOG=0
+PREVIEW=0
+
+while getopts "lp" flag; do
+    case $flag in
+    l) GIT_LOG=1 ;;
+    p) PREVIEW=1 ;;
+    *) ;;
+    esac
+done
+
+mkdir ./submission
+for name in "${@:$OPTIND}"; do
+    cp -r "$name" ./submission 2>/dev/null
+done
+pushd ./submission >/dev/null || exit
+
+for file in *; do
+    if [[ $file =~ $CODE_FILE_REGEX ]]; then
+        {
+            printf "// %s\n// %s\n\n" "$HOPKINS_ID" "$(date -I)"
+            cat "$file"
+        } >_.txt && mv -f _.txt "$file"
+    fi
+done
+
+[[ $GIT_LOG == 1 ]] && git log >gitlog.txt
+
+rm -rf ~/submission.zip ~/preview_submission
+
+for file in *; do
+    zip -r ~/submission.zip "$file"
+done
+popd >/dev/null || exit
+
+if [[ $PREVIEW == 1 ]]; then
+    mv ./submission ~/preview_submission
+    hx ~/preview_submission/*
+    rm -rf ~/preview_submission
+else
+    rm -rf ./submission
+fi
+
+shopt -u nullglob

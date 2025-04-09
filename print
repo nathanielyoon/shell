@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+
+while getopts :eatbo flag; do
+    case $flag in
+    e) PRINT="┌───────┬──────┐  ┌───────────┬─────────┬───┐
+│ r-c   │ #;#f │  │ reset     │ black   │ 0 │
+│ up    │ #A   │  │ bold      │ red     │ 1 │
+│ down  │ #B   │  │ dim       │ green   │ 2 │
+│ right │ #C   │  │ italic    │ yellow  │ 3 │
+│ left  │ #D   │  │ underline │ blue    │ 4 │
+└───────┴──────┘  │ blink     │ magenta │ 5 │
+┌───────┬──────┐  │ inverse   │ cyan    │ 7 │
+│ hide  │ ?25l │  │ invisible │ white   │ 8 │
+│ show  │ ?25h │  │ strike    │ default │ 9 │
+└───────┴──────┘  └───────────┴─────────┴───┘
+┌─────┬────┐  ┌───┬─────────────┐  ┌───┬────┐
+│ all │ 2J │  │ f │ 38;5;#m     │  │ f │ 3  │
+│ .-$ │ 0K │  │ b │ 48;5;#m     │  │ b │ 4  │
+│ ^-. │ 1K │  │ f │ 38;2;#;#;#m │  │ f │ 9  │
+│ ^-$ │ 2K │  │ b │ 48;2;#;#;#m │  │ b │ 10 │
+└─────┴────┘  └───┴─────────────┘  └───┴────┘" ;;
+    a) PRINT="!\"#$%%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_\`abcdefghijklmnopqrstuvwxyz{|}~" ;;
+    t) PRINT="    0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F
+  ┌────────────────────────────────────────────────
+2 │    !  \"  #  $  %  &  '  (  )  *  +  ,  -  .  /
+3 │ 0  1  2  3  4  5  6  7  8  9  :  ;  <  =  >  ?
+4 │ @  A  B  C  D  E  F  G  H  I  J  K  L  M  N  O
+5 │ P  Q  R  S  T  U  V  W  X  Y  Z  [  \\  ]  ^  _
+6 │ \`  a  b  c  d  e  f  g  h  i  j  k  l  m  n  o
+7 │ p  q  r  s  t  u  v  w  x  y  z  {  |  }  ~  ␡" ;;
+    b) PRINT="─ │ ┌ ┐ └ ┘ ├ ┤ ┬ ┴ ┼" ;;
+    o) PRINT="┌────┬─────────────┬────┬──────────────────────────────┐
+│ ## │ group       │ <> │ operator                     │
+├────┼─────────────┼────┼──────────────────────────────┤
+│ 18 │ grouping    │    │ (x)                          │
+│ 17 │ access/call │ lr │ x.y, x?.y, x[y]              │
+│    │             │    │ new x(y), x(y), import(x)    │
+│ 15 │ postfix     │    │ x++, x--                     │
+│ 14 │ prefix      │    │ ++x, --x, !x, ~x, +x, -x     │
+│    │             │    │ typeof, void, delete, await  │
+│ 13 │ exp         │ rl │ x ** y                       │
+│ 12 │ mul         │ lr │ x * y, x / y, x %% y         │
+│ 11 │ add         │ lr │ x + y, x - y                 │
+│ 10 │ shift       │ lr │ x << y, x >> y, x >>> y      │
+│  9 │ relational  │ lr │ x < y, x <= y, x > y, x >= y │
+│    │             │ lr │ x in y, x instanceof y       │
+│  8 │ equality    │ lr │ x === y, x !== y             │
+│  7 │ bitwise AND │ lr │ x & y                        │
+│  6 │ bitwise XOR │ lr │ x ^ y                        │
+│  5 │ bitwise OR  │ lr │ x | y                        │
+│  4 │ logical AND │ lr │ x && y                       │
+│  3 │ logical OR  │ lr │ x || y, x ?? y               │
+│  2 │ misc        │ lr │ x = y, x .= y                │
+│    │             │ rl │ x ? y : z,                   │
+│    │             │ rl │ x => y                       │
+│    │             │    │ yield x, yield* x            │
+│    │             │    │ ...x                         │
+│  1 │ comma       │ lr │ a, b                         │
+└────┴─────────────┴────┴──────────────────────────────┘" ;;
+    *) exit 1 ;;
+    esac
+done
+if [[ -z $PRINT ]]; then
+    printf -- "-e ansi escape codes
+-a ascii characters
+-t ascii table
+-b box-drawing characters
+-o javascript order of operations
+"
+else
+    printf "%s\n" "$PRINT"
+fi

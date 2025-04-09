@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+ITEM=$(cliphist list | fzf | xargs -r cliphist decode)
+printf "%s\n" "$ITEM"
+wl-copy "$ITEM"

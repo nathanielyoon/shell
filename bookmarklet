@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+BUILD=$(esbuild "${1:-./main.ts}" --minify)
+while getopts c flag; do
+    case $flag in
+    c) BUILD=$(cut -c 14<<<"$BUILD") ;;
+    *) exit 1 ;;
+    esac
+done
+
+JS="javascript:$BUILD"
+wl-copy "$JS"
+printf "%s\n" "$JS"

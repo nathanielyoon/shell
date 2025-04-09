@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+nmcli -f "bssid,ssid,bars,security,in-use" --color yes device wifi list |
+    fzf \
+        --ansi \
+        --cycle \
+        --info=hidden \
+        --header-lines=1 \
+        --bind="enter:become(nmcli -a device wifi connect {1})"

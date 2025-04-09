@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+JS=$(esbuild --bundle --minify "$1")
+printf "%s\n" "$JS"
+gzip -9 <<<"$JS" | wc -c

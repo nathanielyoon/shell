@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+sshpass -e ssh "$UGRAD_USERNAME@ugrad${1:-x}.cs.jhu.edu"

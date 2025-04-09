@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+RANGES=$(trash --table never --color always list | tac | fzf --multi --ansi | choose 0)
+if [[ -n $RANGES ]]; then trash restore --ranges "$RANGES"; fi

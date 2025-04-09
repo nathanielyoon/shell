@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+
+cat <<EOF >main.c
+#include <stdio.h>
+
+int main() {
+    printf("\n");
+
+    return 0;
+}
+EOF
+hx main.c
+gccc -o tmp.out main.c && {
+    ./tmp.out
+    rm ./tmp.out
+}
+tp main.c
